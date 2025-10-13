@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MOD 1000000007
+
+int substrings(char* n) {
+    long long total = 0, prev = 0;
+    int len = strlen(n);
+
+    for (int i = 0; i < len; i++) {
+        int digit = n[i] - '0';
+        prev = (prev * 10 + digit * (i + 1)) % MOD;
+        total = (total + prev) % MOD;
+    }
+
+    return (int)total;
+}
+
+char* readline() {
+    size_t alloc_length = 1024;
+    size_t data_length = 0;
+    char* data = malloc(alloc_length);
+
+    while (1) {
+        char* cursor = data + data_length;
+        char* line = fgets(cursor, alloc_length - data_length, stdin);
+
+        if (!line) break;
+        data_length += strlen(cursor);
+        if (data_length < alloc_length - 1 || data[data_length - 1] == '\n') break;
+
+        alloc_length <<= 1;
+        data = realloc(data, alloc_length);
+        if (!data) break;
+    }
+
+    if (data[data_length - 1] == '\n') {
+        data[data_length - 1] = '\0';
+    }
+
+    return data;
+}
+
+int main() {
+    char* n = readline();
+    int result = substrings(n);
+    printf("%d\n", result);
+    free(n);
+    return 0;
+}
