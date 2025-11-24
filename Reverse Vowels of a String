@@ -1,0 +1,66 @@
+
+class Solution {
+public:
+    string reverseVowels(string s) {
+        // O(n) time and space
+        int l = 0, r = s.size() - 1;
+        auto isVowel = [](char& ch) -> bool {
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
+                ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') {
+                return true;
+            }
+            return false;
+        };
+
+        while (l <= r) {
+            if (isVowel(s[l]) && isVowel(s[r])) {
+                swap(s[l], s[r]);
+                l++;
+                r--;
+            } else if (isVowel(s[l]) && !isVowel(s[r]))
+                r--;
+            else if (isVowel(s[r]) && !isVowel(s[l]))
+                l++;
+            else {
+                l++;
+                r--;
+            }
+        }
+
+        return s;
+#if 0
+    // Tc: O(n) Sc: O(n) Overkill for this problem
+    vector<pair<char, int>> str;
+    auto isVowel = [](char &ch) -> bool {
+      if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' ||
+          ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U') {
+        return true;
+      }
+      return false;
+    };
+    for (int i = 0; i < s.size(); i++) {
+      if (isVowel(s[i])) {
+        str.push_back({s[i], i});
+      }
+    }
+    int l = 0, r = str.size() - 1;
+
+    while (l <= r) {
+      swap(str[l].second, str[r].second);
+      l++;
+      r--;
+    }
+    unordered_map<int, char> mpp;
+    for (auto &it : str) {
+      mpp[it.second] = it.first;
+    }
+
+    for (int i = 0; i < s.size(); i++) {
+      if (mpp.find(i) != mpp.end()) {
+        s[i] = mpp[i];
+      }
+    }
+    return s;
+#endif
+    }
+};
