@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool hasGroupsSizeX(vector<int>& deck) {
+        unordered_map<int, int> mp;
+        // Count frequency of each card value
+        for (int card : deck) {
+            mp[card]++;
+        }
+
+        int temp = mp[deck[0]]; // Initialize gcd candidate with count of first card
+
+        // Helper function to compute gcd of two numbers
+        auto gcd = [](int a, int b) {
+            while (b != 0) {
+                int r = a % b;
+                a = b;
+                b = r;
+            }
+            return a;
+        };
+
+        // Compute GCD of counts of all cards
+        for (auto& p : mp) {
+            temp = gcd(temp, p.second);
+        }
+
+        // If gcd > 1, grouping is possible
+        return temp > 1;
+    }
+};
