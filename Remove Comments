@@ -1,0 +1,37 @@
+class Solution {
+    public List<String> removeComments(String[] source) {
+        List<String> result = new ArrayList<>();
+        boolean inBlock = false;
+        StringBuilder sb = new StringBuilder();
+
+        for (String line : source) {
+            int i = 0;
+            char[] chars = line.toCharArray();
+
+            if (!inBlock) sb = new StringBuilder();
+
+            while (i < chars.length) {
+                if (!inBlock && i + 1 < chars.length && chars[i] == '/' && chars[i+1] == '/') {
+                    // Line comment → stop processing this line
+                    break;
+                } else if (!inBlock && i + 1 < chars.length && chars[i] == '/' && chars[i+1] == '*') {
+                    // Start block comment
+                    inBlock = true;
+                    i += 2;
+                } else if (inBlock && i + 1 < chars.length && chars[i] == '*' && chars[i+1] == '/') {
+                    // End block comment
+                    inBlock = false;
+                    i += 2;
+                } else {
+                    if (!inBlock) sb.append(chars[i]);
+                    i++;
+                }
+            }
+
+            if (!inBlock && sb.length() > 0) {
+                result.add(sb.toString());
+            }
+        }
+        return result;
+    }
+}
