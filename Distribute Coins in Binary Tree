@@ -1,0 +1,22 @@
+class Solution {
+    private int moves = 0;
+
+    public int distributeCoins(TreeNode root) {
+        dfs(root);
+        return moves;
+    }
+
+    private int dfs(TreeNode node) {
+        if (node == null) return 0;
+
+        // Post-order traversal
+        int left = dfs(node.left);
+        int right = dfs(node.right);
+
+        // Count moves: absolute transfers
+        moves += Math.abs(left) + Math.abs(right);
+
+        // Balance = coins at node - 1 (needed) + left + right
+        return node.val - 1 + left + right;
+    }
+}
